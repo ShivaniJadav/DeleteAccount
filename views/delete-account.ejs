@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+		<title>FirmPet | Delete Account</title>
+		<link rel="stylesheet" href="/assets/css/style.css" />
+		<link rel="stylesheet" href="/assets/css/responsive.css" />
+	</head>
+	<script>
+		if ( window.history.replaceState ) {
+		   window.history.replaceState( null, null, window.location.href );
+	   }
+	   </script>
+	<body>
+		<section class="auth-section">
+			<img src="/assets/images/cover/sm-cloud.svg" alt="clouds" class="sm-cloud elements" />
+			<img src="/assets/images/cover/md-cloud.svg" alt="clouds" class="md-cloud elements" />
+			<img src="/assets/images/cover/footprint.svg" alt="footprint" class="top-footprint elements" />
+			<img src="/assets/images/cover/footprint.svg" alt="footprint" class="left-footprint elements" />
+			<img src="/assets/images/cover/footprint.svg" alt="footprint" class="right-footprint elements" />
+			<div class="auth-container">
+				<a href="javascript:void(0)" class="auth-logo-wrap">
+					<img src="/assets/images/logo/logo.svg" alt="FirmPet" />
+				</a>
+				<h1 class="auth-title">Delete Account</h1>
+				<span class="auth-subtitle">Enter your registered email to receive an OTP.</span>
+				<form class="auth-form" id = "emailForm" action="/users/" method="post">
+				<script>
+					document.getElementById('emailForm').addEventListener('submit', function(event) {
+					const emailInput = document.getElementById('email');
+					const emailError = document.getElementById('emailError');
+					const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+					if (!emailInput.value) {
+						event.preventDefault();
+						emailError.textContent = 'Email is required';
+					// } else if(!emailPattern.test(email)) {
+					// 	event.preventDefault();
+					// 	emailError.textContent = 'Email is invalid!';
+					} else {
+						emailError.textContent = '';
+					}
+					});
+				</script>
+					<div class="input-sm-space">
+						<label for="email" class="fp-label">Email</label>
+						<div class="input-wrap">
+							<span class="input-icon">
+								<svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M14.0057 15.5708C13.4086 15.9688 12.7151 16.1793 12 16.1793C11.285 16.1793 10.5914 15.9688 9.99431 15.5708L0.159797 9.01422C0.105234 8.97785 0.0520781 8.93993 0 8.90093V19.6445C0 20.8763 0.999609 21.8539 2.20936 21.8539H21.7906C23.0224 21.8539 24 20.8543 24 19.6445V8.90088C23.9478 8.93997 23.8945 8.97799 23.8398 9.01441L14.0057 15.5708Z" fill="#FF6B48"></path>
+									<path d="M0.939844 7.84416L10.7744 14.4008C11.1466 14.649 11.5733 14.773 12 14.773C12.4267 14.773 12.8534 14.6489 13.2256 14.4008L23.0602 7.84416C23.6487 7.45205 24 6.7958 24 6.08752C24 4.86966 23.0092 3.87891 21.7914 3.87891H2.20861C0.990797 3.87895 0 4.8697 0 6.08869C0 6.7958 0.351375 7.45205 0.939844 7.84416Z" fill="#FF6B48"></path>
+								</svg>
+							</span>
+							<input type="email" name="email" id="email" class="fp-input icon-left" placeholder="Enter email" value="<%= email ? email : '' %>" />
+						</div>
+						<span id="emailError" style="color: red;"><%= error %></span>
+					</div>
+					<div class="input-lg-space">
+						<label for="reason" class="fp-label">Reason for leaving (Optional)</label>
+						<textarea name="reason" id="reason" class="fp-input" placeholder="Write reason or feedback"></textarea>
+					</div>
+					<button type="submit" class="fp-btn">Submit</button>
+				</form>
+			</div>
+		</section>
+	</body>
+</html>

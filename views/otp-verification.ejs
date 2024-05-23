@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+	<title>FirmPet | OTP Verification</title>
+	<link rel="stylesheet" href="/assets/css/style.css" />
+	<link rel="stylesheet" href="/assets/css/responsive.css" />
+</head>
+
+<body>
+	<section class="auth-section">
+		<img src="/assets/images/cover/sm-cloud.svg" alt="clouds" class="sm-cloud elements" />
+		<img src="/assets/images/cover/md-cloud.svg" alt="clouds" class="md-cloud elements" />
+		<img src="/assets/images/cover/footprint.svg" alt="footprint" class="top-footprint elements" />
+		<img src="/assets/images/cover/footprint.svg" alt="footprint" class="left-footprint elements" />
+		<img src="/assets/images/cover/footprint.svg" alt="footprint" class="right-footprint elements" />
+
+		<div class="auth-container">
+			<a href="javascript:void(0)" class="auth-logo-wrap">
+				<img src="/assets/images/logo/logo.svg" alt="FirmPet" />
+			</a>
+			<h1 class="auth-title">Enter OTP</h1>
+			<span class="auth-subtitle">Enter the OTP which has been sent to <span class="fw-semibold">
+					<%= email %>
+				</span></span>
+			<span class="otp-guideline">Please enter the 6-digit OTP code</span>
+			<form class="auth-form" id="otp-form" action="/users/verify/" method="post">
+				<div class="otp-input-wrap">
+					<input type="text" name="otp-input" id="otp-input-1" maxlength="1" class="fp-input" />
+					<input type="text" name="otp-input" id="otp-input-2" maxlength="1" class="fp-input" />
+					<input type="text" name="otp-input" id="otp-input-3" maxlength="1" class="fp-input" />
+					<input type="text" name="otp-input" id="otp-input-4" maxlength="1" class="fp-input" />
+					<input type="text" name="otp-input" id="otp-input-5" maxlength="1" class="fp-input" />
+					<input type="text" name="otp-input" id="otp-input-6" maxlength="1" class="fp-input" />
+				</div>
+				<span id="otpError" style="color: red;margin: 10px 10px;text-align: center;" class="otp-guideline">
+					<%= typeof error=="undefined" ? '' : error %>
+				</span>
+				<input type="hidden" name="otp" id="otp-hidden-input" />
+				<input type="hidden" name="email" id="otp-hidden-input" value="<%= email %>" />
+				<button type="submit" class="fp-btn">Submit</button>
+			</form>
+			<script>
+				document.getElementById('otp-form').addEventListener('submit', function (event) {
+					console.log("hi")
+					event.preventDefault();
+					const otpInputs = document.querySelectorAll('input[name="otp-input"]');
+					const otpError = document.getElementById('otpError');
+					
+					let otpValue = '';
+					otpInputs.forEach(input => {
+						otpValue += input.value;
+					});
+					document.getElementById('otp-hidden-input').value = otpValue;
+					if(otpValue = '') {
+						otpError.textContent = 'OTP is required';
+					} else {
+						this.submit();
+					}
+				});
+
+				document.addEventListener('DOMContentLoaded', function () {
+					const inputs = document.querySelectorAll('.fp-input');
+					inputs.forEach((input, index) => {
+						input.addEventListener('input', () => {
+							if (input.value.length === 1 && index < inputs.length - 1) {
+								inputs[index + 1].focus();
+							}
+							updateHiddenInput();
+						});
+
+						input.addEventListener('keydown', (e) => {
+							if (e.key === 'Backspace' && input.value.length === 0 && index > 0) {
+								inputs[index - 1].focus();
+							}
+						});
+
+						input.addEventListener('paste', (e) => {
+							e.preventDefault();
+							const pasteData = e.clipboardData.getData('text');
+							if (/^\d{6}$/.test(pasteData)) {
+								pasteData.split('').forEach((char, i) => {
+									if (i < inputs.length) {
+										inputs[i].value = char;
+									}
+								});
+								updateHiddenInput();
+								inputs[inputs.length - 1].focus();
+							}
+						});
+					});
+
+					function updateHiddenInput() {
+						const otpValue = Array.from(inputs).map(input => input.value).join('');
+						document.getElementById('otp-hidden-input').value = otpValue;
+					}
+				});
+			</script>
+		</div>
+	</section>
+</body>
+
+</html>
